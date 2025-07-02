@@ -1,0 +1,37 @@
+seel - app - travel app 
+
+pages 
+ /home
+   <components>
+    - header - ready 
+    - search-bar - ready
+    - select your next trip - ready 
+    - trip-cards (slider cards)
+    - footer - ready 
+   </components>
+ /trips-information
+    <components>
+        - header (back button)/(save button - heart icon)
+        - body-photo-country
+        - modal-description-country
+        - upcoming-tours (see all button)/(card-tours{slider cards},{save button - heart icon})
+          /description-tour
+
+    </components>
+ /book-now
+    <components>
+        - header (back button)/(save button - heart icon)
+        - body-photo-country
+        - book-now-bar-options(accomodation, tour schedule, booking details ) 
+        - modal-description-travel
+          - h1 - Travel-days
+          - card-days-travel-description(day, time,  activity, description) {button-expand-card}
+    </components>
+
+
+
+
+
+
+
+/components
