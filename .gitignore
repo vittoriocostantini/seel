@@ -33,5 +33,50 @@ yarn-error.*
 # local env files
 .env*.local
 
+# images
+
+*.jpg
+
 # typescript
 *.tsbuildinfo
+tours-argentina.txt
+tours-australia.txt
+tours-austria.txt
+tours-bolivia.txt
+tours-brazil.txt
+tours-canada.txt
+tours-chile.txt
+tours-china.txt
+tours-colombia.txt
+tours-dominican-republic.txt
+tours-ecuador.txt
+tours-egipto.txt
+tours-fiji.txt
+tours-france.txt
+tours-germany.txt
+tours-greece.txt
+tours-guatemala.txt
+tours-honduras.txt
+tours-india.txt
+tours-indonesia.txt
+tours-italy.txt
+tours-japan.txt
+tours-kenya.txt
+tours-mexico.txt
+tours-morocco.txt
+tours-netherlands.txt
+tours-new-zealand.txt
+tours-nicaragua.txt
+tours-panama.txt
+tours-peru.txt
+tours-philippines.txt
+tours-portugal.txt
+tours-russia.txt
+tours-singapore.txt
+tours-spain.txt
+tours-switzerland.txt
+tours-thailand.txt
+tours-tonga.txt
+tours-turkey.txt
+tours-united-kingdom.txt
+tours-united-states.txt

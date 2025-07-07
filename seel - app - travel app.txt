@@ -35,3 +35,10 @@ pages
 
 
 /components
+
+
+header props 
+
+ok escucha, quiero que el bottomsheet que tengo en este componente, actue como la pagina de detalles de airbnb, que cuando se scrollea la imagen desaparece/aparece y se puede seguir bajando en el bottom sheet, el bottom sheet debe tener los estilos que tiene ahorita y siempre estar encima de la imagen @trip.tsx igual que la pagina de reserve de airbnb, reemplaza el bottomsheet este y hazlo de nuevo, hazlo identico, si es posible reemplaza lo que quieras 
+
+airbnb 
