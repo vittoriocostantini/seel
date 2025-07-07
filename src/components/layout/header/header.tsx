@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SearchBar from '../search-bar/search-bar';
 
 const user = {
@@ -10,9 +11,14 @@ const user = {
 
 function Header() {
   const [search, setSearch] = useState('');
+  const insets = useSafeAreaInsets();
+  
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container, { 
+        paddingLeft: insets.left + 20,
+        paddingRight: insets.right + 20 
+      }]}>
         <View>
           <Text style={styles.hello}>Hello, {user.name}</Text>
           <Text style={styles.welcome}>Welcome to Seel</Text>
@@ -29,17 +35,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
     marginBottom: 20,
   },
   hello: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#222',
+    color: '#212529',
   },
   welcome: {
     fontSize: 14,
-    color: '#888',
+    fontWeight: 300,
+    color: '#212529',
   },
   avatar: {
     width: 44,

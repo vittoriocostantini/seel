@@ -1,19 +1,23 @@
 import React from 'react';
 import { View, StyleSheet, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Carousel from 'react-native-reanimated-carousel';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
-import { selectCarouselData } from '../../../store/carousel-cards-slice';
+import { selectCarouselData } from '../../../redux/countries-slice/countries-data-slice';
+import RatingRow from '../../common/rating-row';
 
 const { width } = Dimensions.get('window');
 
 interface CarouselCardsProps {
   continent: string;
+  onSeeMore?: (countryData: any) => void;
 }
 
-const CarouselCards: React.FC<CarouselCardsProps> = ({ continent }) => {
+const CarouselCards: React.FC<CarouselCardsProps> = ({ continent, onSeeMore }) => {
   const data = useSelector((state: any) => selectCarouselData(state, continent));
+  const insets = useSafeAreaInsets();
 
   if (!data.length) {
     return (
@@ -24,59 +28,68 @@ const CarouselCards: React.FC<CarouselCardsProps> = ({ continent }) => {
   }
 
   return (
-    <Carousel
-      width={width}
-      height={620}
-      data={data}
-      style={{ alignSelf: 'center' }}
-      mode="parallax"
-      modeConfig={{
-        parallaxScrollingScale: 0.9,
-        parallaxScrollingOffset: 120,
-        parallaxAdjacentItemScale: 0.7,
-      }}
-      renderItem={({ item }) => (
-        <View style={styles.card}>
-          <Image source={item.image} style={styles.cardImage} />
-          <LinearGradient
-            colors={["rgba(0,0,0,0.7)", "transparent"]}
-            style={styles.cardGradientTop}
-          />
-          <LinearGradient
-            colors={["transparent", "rgba(0,0,0,0.7)"]}
-            style={styles.cardGradient}
-          />
-          <TouchableOpacity style={styles.heartIcon}>
-            <AntDesign name="hearto" size={20} color="#fff" />
-          </TouchableOpacity>
-          <View style={styles.cardInfoOverlay}>
-            <Text style={styles.cardCountry}>{item.country}</Text>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <View style={styles.cardRatingRow}>
-              <View style={styles.cardRatingSpan}>
-                <Feather name="star" size={16} color="#F8F8F8" style={{ marginRight: 4 }} />
-                <Text style={styles.cardRating}>{item.rating.toFixed(1)}</Text>
-              </View>
-              <Text style={styles.cardReviews}>{item.reviews} reviews</Text>
-            </View>
-            <TouchableOpacity style={styles.cardButton}>
-              <View style={styles.cardButtonContent}>
-                <Text style={[styles.cardButtonText, styles.cardButtonTextCentered]}>See more</Text>
-                <View style={styles.cardButtonIconWrapper}>
-                  <View style={styles.cardButtonIconCircle}>
-                    <Feather name="chevron-right" size={28} color="#000" />
+    <View style={[styles.carouselContainer, {
+      paddingLeft: insets.left,
+      paddingRight: insets.right
+    }]}>
+      <Carousel
+        width={width - (insets.left + insets.right)}
+        height={620}
+        data={data}
+        style={{ alignSelf: 'center' }}
+        mode="parallax"
+        modeConfig={{
+          parallaxScrollingScale: 0.9,
+          parallaxScrollingOffset: 120,
+          parallaxAdjacentItemScale: 0.7,
+        }}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Image source={item.image} style={styles.cardImage} />
+            <LinearGradient
+              colors={["rgba(0,0,0,0.7)", "transparent"]}
+              style={styles.cardGradientTop}
+            />
+            <LinearGradient
+              colors={["transparent", "rgba(0,0,0,0.7)"]}
+              style={styles.cardGradient}
+            />
+            <TouchableOpacity style={styles.heartIcon}>
+              <AntDesign name="hearto" size={20} color="#fff" />
+            </TouchableOpacity>
+            <View style={styles.cardInfoOverlay}>
+              <Text style={styles.cardCountry}>{item.country}</Text>
+              <Text style={styles.cardTitle}>{item.title}</Text>
+              <RatingRow
+                rating={item.rating}
+                reviews={item.reviews}
+                style={styles.cardRatingRow}
+                styleSpan={styles.cardRatingSpan}
+                styleText={styles.cardRating}
+                styleReviews={styles.cardReviews}
+              />
+              <TouchableOpacity style={styles.cardButton} onPress={() => onSeeMore && onSeeMore(item)}>
+                <View style={styles.cardButtonContent}>
+                  <Text style={[styles.cardButtonText, styles.cardButtonTextCentered]}>See more</Text>
+                  <View style={styles.cardButtonIconWrapper}>
+                    <View style={styles.cardButtonIconCircle}>
+                      <Feather name="chevron-right" size={28} color="#000" />
+                    </View>
                   </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      )}
-    />
+        )}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  carouselContainer: {
+    flex: 1,
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 24,
@@ -161,7 +174,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 100,
-    borderColor: '#F8F8F8',
+    borderColor: '#f5f6f7',
     paddingHorizontal: 4,
 
   },
