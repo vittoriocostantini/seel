@@ -1,16 +1,16 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { IMAGES } from './images-carousel-store';
-import { CONTINENT_COUNTRY_MAP } from './country-map';
+import { IMAGES } from '../../store/images-countries';
+import { CONTINENT_COUNTRY_MAP, COUNTRY_MAP } from '../countries-slice/country-map';
 
 
 
 const CONTINENT_KEY_MAP: Record<string, string> = {
   asia: 'asia',
-  europa: 'europe',
-  sudamerica: 'south-america',
+  europe: 'europe',
+  southamerica: 'southamerica',
   africa: 'africa',
   oceania: 'oceania',
-  northamerica: 'north-america',
+  northamerica: 'northamerica',
 };
 
 
@@ -24,6 +24,8 @@ const getCarouselData = (
   image: any;
   rating: number;
   reviews: number;
+  description: string;
+  folder: string;
 }> => {
   return countries.flatMap((countryObj) =>
     countryObj.images.map((imgObj, idx) => ({
@@ -31,8 +33,10 @@ const getCarouselData = (
       title: imgObj.title,
       country: countryObj.country,
       image: IMAGES[continentKey]?.[countryObj.folder]?.[imgObj.file],
-      rating: 4.8,
-      reviews: 100 + idx * 10,
+      rating: countryObj.rating,
+      reviews: countryObj.reviews,
+      description: countryObj.description || '',
+      folder: countryObj.folder,
     }))
   );
 };
@@ -58,6 +62,17 @@ const selectCountries = (state: any, continent: string) => {
 export const selectCarouselData = createSelector(
   [selectContinentKey, selectCountries],
   (continentKey, countries) => getCarouselData(continentKey, countries)
+);
+
+export const selectCountryData = createSelector(
+  [(_: any, continent: string) => continent, (_: any, __: string, country: string) => country],
+  (continent, country) => {
+    const countryObj = COUNTRY_MAP[`${continent}-${country}`];
+    if (!countryObj) return undefined;
+    const mainImageFile = countryObj.images[0]?.file;
+    const image = IMAGES[continent]?.[country]?.[mainImageFile];
+    return { ...countryObj, image, isoCode: countryObj.isoCode };
+  }
 );
 
 export default carouselCardsSlice.reducer; 
