@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import Header from '../../components/layout/header/header';
 
 function Profile() {
   return (
