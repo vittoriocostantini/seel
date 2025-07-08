@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { Tour } from '../../types/tour';
-import { getToursForCountry, TourData } from '../../store/tours-data';
+import { getToursForCountry, TourData } from '../../data/tours-data';
 
 interface ToursState {
   toursByCountry: Record<string, Tour[]>;
@@ -10,11 +10,10 @@ const initialState: ToursState = {
   toursByCountry: {},
 };
 
-// Función para convertir TourData a Tour con estado de favorito
+// Función para convertir TourData a Tour (ya no agrega isFavorite)
 const convertTourDataToTour = (tourData: TourData): Tour => {
   return {
     ...tourData,
-    isFavorite: false,
   };
 };
 
@@ -22,16 +21,6 @@ const toursSlice = createSlice({
   name: 'tours',
   initialState,
   reducers: {
-    toggleFavorite: (state, action) => {
-      const { tourId, countryKey } = action.payload;
-      const tours = state.toursByCountry[countryKey];
-      if (tours) {
-        const tour = tours.find(t => t.id === tourId);
-        if (tour) {
-          tour.isFavorite = !tour.isFavorite;
-        }
-      }
-    },
     initializeToursForCountry: (state, action) => {
       const { continent, country } = action.payload;
       const countryKey = `${continent}-${country}`;
@@ -44,7 +33,7 @@ const toursSlice = createSlice({
   },
 });
 
-export const { toggleFavorite, initializeToursForCountry } = toursSlice.actions;
+export const { initializeToursForCountry } = toursSlice.actions;
 
 // Selectores
 export const selectToursForCountry = createSelector(

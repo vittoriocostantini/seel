@@ -104,6 +104,9 @@ export const CONTINENT_COUNTRY_MAP: Record<string, Array<Country>> = {
       { country: 'Honduras', folder: 'honduras', images: [
         { file: 'card1.jpg', title: 'Tegucigalpa' },
       ], description: 'Honduras ofrece una naturaleza exuberante, ruinas mayas y playas en el Caribe. Tegucigalpa, la capital, es una ciudad rodeada de montañas y cultura. El país es perfecto para los amantes del ecoturismo y la aventura.', rating: 4.5, reviews: 170 },
+      { country: 'Nicaragua', folder: 'nicaragua', images: [
+        { file: 'card1.jpg', title: 'Managua' },
+      ], description: 'Nicaragua es tierra de volcanes, lagos y ciudades coloniales. Managua, la capital, es el punto de partida para explorar Granada, León y la isla de Ometepe. El país destaca por su naturaleza virgen, playas del Pacífico y la calidez de su gente.', rating: 4.5, reviews: 170 },
  
     ],
     oceania: [
@@ -116,9 +119,7 @@ export const CONTINENT_COUNTRY_MAP: Record<string, Array<Country>> = {
       { country: 'Fiji', folder: 'fiji', images: [
         { file: 'card1.jpg', title: 'Suva' },
       ], description: 'Fiyi es un archipiélago tropical en el Pacífico Sur, conocido por sus playas de arena blanca, arrecifes de coral y hospitalidad. Suva, la capital, es una ciudad animada y multicultural. El destino perfecto para relajarse y disfrutar de la naturaleza.', rating: 4.6, reviews: 180 },
-      { country: 'Papua New Guinea', folder: 'papua-new-guinea', images: [
-        { file: 'card1.jpg', title: 'Port Moresby' },
-      ], description: 'Papúa Nueva Guinea es un país de selvas vírgenes, culturas ancestrales y paisajes espectaculares. Port Moresby, la capital, es la puerta de entrada a un mundo de biodiversidad y tradiciones únicas. Ideal para los viajeros más aventureros.', rating: 4.5, reviews: 170 }
+
     ],
     southamerica: [
       { country: 'Argentina', folder: 'argentina', images: [

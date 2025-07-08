@@ -4,7 +4,6 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
 import Home from '../screens/home/home';
 import Profile from '../screens/profile/profile';
-import BookNow from '../screens/book/book-now';
 
 
 const TABS = [
@@ -29,7 +28,7 @@ export default function MainTabs() {
       case 'Home':
         return <Home />;
       case 'Profile':
-        return <BookNow />;
+        return <Profile />;
       default:
         return null;
     }

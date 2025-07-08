@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import FavoriteButton from './favorite-button';
+import { Image } from 'expo-image';
 
 interface TravelCardProps {
   id: string;
@@ -32,7 +33,12 @@ const TravelCard: React.FC<TravelCardProps> = ({
 }) => {
   return (
     <View style={styles.card}>
-      <Image source={image} style={styles.image} resizeMode="cover" />
+      <Image
+        source={typeof image === 'string' ? image : image}
+        style={styles.image}
+        contentFit="cover"
+        cachePolicy="memory-disk"
+      />
       <FavoriteButton
         style={styles.favoriteButton}
         onPress={onFavoritePress}

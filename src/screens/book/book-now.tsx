@@ -1,56 +1,54 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import ExpandCard from './expand-card';
+import { ExpandCard } from '../../components/forms/card-tours-details';
+import { View, StyleSheet, Text } from 'react-native';
+import { TOURS_DETAILS_DATA } from '../../data';
 
-function BookNow() {
+interface BookNowProps {
+  tourId: string;
+}
+
+function BookNow({ tourId }: BookNowProps) {
+  const details = TOURS_DETAILS_DATA[tourId];
+  if (!details) {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.title}>No details available for this tour.</Text>
+      </View>
+    );
+  }
   return (
-    <ScrollView contentContainerStyle={styles.scrollContent} style={styles.container}>
-      <ExpandCard
-        image={require('../../assets/countries/southamerica/brazil/card1.jpg')}
-        day="Day 1"
-        title="Arrival to Rio de Janeiro"
-        subTitle="Highlights"
-        details={[
-          { label: 'Morning', text: 'Arrive in Rio de Janeiro and transfer to your hotel' },
-          { label: 'Afternoon', text: 'Free time to relax or explore the nearby area' },
-          { label: 'Evening', text: 'Welcome dinner at a traditional Brazilian restaurant' },
-        ]}
-      />
-      <ExpandCard
-        image={require('../../assets/countries/southamerica/brazil/card2.jpg')}
-        day="Day 2"
-        title="Christ the Redeemer & Sugarloaf"
-        subTitle="Iconic Sights"
-        details={[
-          { label: 'Morning', text: 'Guided tour to Christ the Redeemer' },
-          { label: 'Afternoon', text: 'Cable car ride to Sugarloaf Mountain' },
-          { label: 'Evening', text: 'Dinner at a local restaurant' },
-        ]}
-      />
-      <ExpandCard
-        image={require('../../assets/countries/southamerica/brazil/card3.jpg')}
-        day="Day 3"
-        title="Beaches & Departure"
-        subTitle="Relax & Goodbye"
-        details={[
-          { label: 'Morning', text: 'Relax at Copacabana Beach' },
-          { label: 'Afternoon', text: 'Shopping and leisure time' },
-          { label: 'Evening', text: 'Transfer to airport for departure' },
-        ]}
-      />
-    </ScrollView>
+    <>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{details[0]?.title || 'Tour Details'}</Text>
+      </View>
+      {details.map((day, idx) => (
+        <ExpandCard
+          key={idx}
+          day={day.day}
+          title={day.title}
+          subTitle={day.subTitle}
+          details={day.details}
+        />
+      ))}
+      </View>
+    </>
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    marginBottom: 90,
+
   },
-  scrollContent: {
-    paddingVertical: 50,
-    paddingHorizontal: 20,
-    paddingBottom: 50,
+  header: {
+    height: 'auto'
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 19,
+    color: '#212529',
   },
 });
 

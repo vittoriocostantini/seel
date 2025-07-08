@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { IMAGES } from '../../store/images-countries';
+import { IMAGES } from '../../data/images-countries-data';
 import { CONTINENT_COUNTRY_MAP, COUNTRY_MAP } from '../countries-slice/country-map';
 
 
@@ -26,6 +26,7 @@ const getCarouselData = (
   reviews: number;
   description: string;
   folder: string;
+  continent: string;
 }> => {
   return countries.flatMap((countryObj) =>
     countryObj.images.map((imgObj, idx) => ({
@@ -37,6 +38,7 @@ const getCarouselData = (
       reviews: countryObj.reviews,
       description: countryObj.description || '',
       folder: countryObj.folder,
+      continent: continentKey,
     }))
   );
 };

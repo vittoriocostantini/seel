@@ -4,9 +4,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Carousel from 'react-native-reanimated-carousel';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectCarouselData } from '../../../redux/countries-slice/countries-data-slice';
+import { selectCountryFavorite, toggleCountryFavorite } from '../../../redux/countries-slice/favorite-slice-countries/country-favorites-slice';
 import RatingRow from '../../common/rating-row';
+import { Image as ExpoImage } from 'expo-image';
 
 const { width } = Dimensions.get('window');
 
@@ -43,9 +45,18 @@ const CarouselCards: React.FC<CarouselCardsProps> = ({ continent, onSeeMore }) =
           parallaxScrollingOffset: 120,
           parallaxAdjacentItemScale: 0.7,
         }}
-        renderItem={({ item }) => (
+        renderItem={({ item }) => {
+          const dispatch = useDispatch();
+          const isFavorite = useSelector((state) => selectCountryFavorite(state, item.continent, item.folder));
+          const onFavoritePress = () => dispatch(toggleCountryFavorite({ continent: item.continent, country: item.folder }));
+          return (
           <View style={styles.card}>
-            <Image source={item.image} style={styles.cardImage} />
+            <ExpoImage
+              source={typeof item.image === 'string' ? item.image : item.image}
+              style={styles.cardImage}
+              contentFit="cover"
+              cachePolicy="memory-disk"
+            />
             <LinearGradient
               colors={["rgba(0,0,0,0.7)", "transparent"]}
               style={styles.cardGradientTop}
@@ -54,8 +65,8 @@ const CarouselCards: React.FC<CarouselCardsProps> = ({ continent, onSeeMore }) =
               colors={["transparent", "rgba(0,0,0,0.7)"]}
               style={styles.cardGradient}
             />
-            <TouchableOpacity style={styles.heartIcon}>
-              <AntDesign name="hearto" size={20} color="#fff" />
+              <TouchableOpacity style={styles.heartIcon} onPress={onFavoritePress}>
+                <AntDesign name={isFavorite ? "heart" : "hearto"} size={20} color={isFavorite ? "#ff4757" : "#fff"} />
             </TouchableOpacity>
             <View style={styles.cardInfoOverlay}>
               <Text style={styles.cardCountry}>{item.country}</Text>
@@ -80,7 +91,8 @@ const CarouselCards: React.FC<CarouselCardsProps> = ({ continent, onSeeMore }) =
               </TouchableOpacity>
             </View>
           </View>
-        )}
+          );
+        }}
       />
     </View>
   );

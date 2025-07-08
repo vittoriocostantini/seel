@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import carouselCardsReducer from '../redux/countries-slice/countries-data-slice';
-import toursReducer from '../redux/tours-slice/tours-data-slice';
-
+import {
+  countriesDataReducer,
+  countryFavoritesSlice,
+} from '../redux/countries-slice';
+import { toursReducer, tourFavoritesSlice } from '../redux/tours-slice';
 const store = configureStore({
   reducer: {
-    carouselCards: carouselCardsReducer,
+    carouselCards: countriesDataReducer,
     tours: toursReducer,
+    countryFavorites: countryFavoritesSlice.reducer,
+    tourFavorites: tourFavoritesSlice.reducer,
   },
 });
 

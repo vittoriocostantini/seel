@@ -10,14 +10,18 @@ import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { StackParamList } from '../../types/navigation';
 import { selectCountryData } from '../../redux/countries-slice/countries-data-slice';
+import { selectCountryFavorite, toggleCountryFavorite } from '../../redux/countries-slice/favorite-slice-countries/country-favorites-slice';
 import { initializeToursForCountry } from '../../redux/tours-slice/tours-data-slice';
 import BottomSheet from '../../components/layout/bottom-sheet/bottom-sheet';
 import Animated, { useSharedValue, useAnimatedStyle, interpolate, Extrapolate, withTiming } from 'react-native-reanimated';
+import { Image as ExpoImage } from 'expo-image';
 
 const { width, height } = Dimensions.get('window');
 
 const SHEET_EXPANDED = 0;
 const SHEET_COLLAPSED = height - 120;
+
+const AnimatedExpoImage = Animated.createAnimatedComponent(ExpoImage);
 
 function Trip() {
   const navigation = useNavigation();
@@ -27,6 +31,8 @@ function Trip() {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
+  const isFavorite = useSelector((state) => selectCountryFavorite(state, continent, country));
+  const onFavoritePress = () => dispatch(toggleCountryFavorite({ continent, country }));
 
   // Valor compartido para la posición del bottom sheet
   const sheetPosition = useSharedValue(0); // 0 = expandido, 1 = colapsado
@@ -59,17 +65,25 @@ function Trip() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Animated.Image source={countryData.image} style={[styles.mainImage, animatedImageStyle]} resizeMode="cover" />
+        <AnimatedExpoImage
+          source={typeof countryData.image === 'string' ? countryData.image : countryData.image}
+          style={[styles.mainImage, animatedImageStyle]}
+          contentFit="cover"
+          cachePolicy="memory-disk"
+        />
         <BackButton
+          size={28}
           onPress={() => navigation.goBack()}
           style={[styles.backButton, {
-            top: insets.top + 40,
+            top: insets.top + 15,
             left: insets.left + 20
           }]}
         />
         <FavoriteButton
+          isFavorite={isFavorite}
+          onPress={onFavoritePress}
           style={[styles.favoriteButton, {
-            top: insets.top + 40,
+            top: insets.top + 15,
             right: insets.right + 20
           }]}
         />

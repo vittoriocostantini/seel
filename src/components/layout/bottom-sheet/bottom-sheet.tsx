@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import RatingRow from '../../common/rating-row';
 import TravelCardsCarousel from '../../common/travel-cards-carousel';
 import Animated, { useAnimatedStyle, useSharedValue, useAnimatedGestureHandler, withTiming } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import { useEffect } from 'react';
 import CountryFlag from 'react-native-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectToursForContinentCountry, toggleFavorite } from '../../../redux/tours-slice/tours-data-slice';
+import { selectTourFavoritesForCountry, toggleTourFavorite, selectToursForContinentCountry  } from '../../../redux/tours-slice';
 import { Tour } from '../../../types/tour';
+import BookNow from '../../../screens/book/book-now';
+import GenericBottomSheet from './generic-bottom-sheet';
+import { TOURS_DETAILS_DATA } from '../../../data';TOURS_DETAILS_DATA
 
 interface BottomSheetProps {
   countryData: {
@@ -44,10 +46,16 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   SHEET_COLLAPSED,
 }) => {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const [showBookNow, setShowBookNow] = React.useState(false);
+  const [selectedTourId, setSelectedTourId] = React.useState<string | null>(null);
+  const bookNowSheetRef = useRef<{ expandSheet: () => void }>(null);
   const dispatch = useDispatch();
   
   // Obtener tours del slice
   const tours = useSelector((state) => selectToursForContinentCountry(state, continent, country));
+  const countryKey = `${continent}-${country}`;
+  // Obtener todos los favoritos de tours de este país
+  const tourFavorites = useSelector((state) => selectTourFavoritesForCountry(state, countryKey));
 
   // Sincronizar estado colapsado con sheetPosition animado
   useEffect(() => {
@@ -57,6 +65,13 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     }, 50);
     return () => clearInterval(id);
   }, [sheetPosition, isCollapsed]);
+
+  // Llama a expandSheet automáticamente cuando showBookNow cambia a true
+  useEffect(() => {
+    if (showBookNow && bookNowSheetRef.current) {
+      bookNowSheetRef.current.expandSheet();
+    }
+  }, [showBookNow]);
 
   // Handler del gesto
   const gestureHandler = useAnimatedGestureHandler({
@@ -91,20 +106,28 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     transform: [{ translateY: translateY.value }],
   }));
 
-  // Preparar tours con handlers
-  const toursWithHandlers: Tour[] = tours.map((tour: any) => ({
-    ...tour,
-    onFavoritePress: () => {
-      dispatch(toggleFavorite({ 
-        tourId: tour.id, 
-        countryKey: `${continent}-${country}` 
-      }));
-    },
-    onActionPress: () => {
-      // Aquí puedes agregar la navegación al detalle del tour
-      console.log('Tour selected:', tour.id);
-    },
-  }));
+  // Preparar tours con handlers y estado de favorito desde el nuevo slice
+  const toursWithHandlers: Tour[] = tours.map((tour: any) => {
+    const isFavorite = !!tourFavorites[`${countryKey}-${tour.id}`];
+    return {
+      ...tour,
+      isFavorite,
+      onFavoritePress: () => {
+        dispatch(toggleTourFavorite({ 
+          countryKey, 
+          tourId: tour.id 
+        }));
+      },
+      onActionPress: () => {
+        setSelectedTourId(tour.id);
+        if (showBookNow && bookNowSheetRef.current) {
+          bookNowSheetRef.current.expandSheet();
+        } else {
+          setShowBookNow(true);
+        }
+      },
+    };
+  });
 
   return (
     <>
@@ -153,6 +176,18 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         >
           <Ionicons name="chevron-up" size={28} color="#212529" />
         </TouchableOpacity>
+      )}
+      {showBookNow && selectedTourId && (
+        <GenericBottomSheet 
+          ref={bookNowSheetRef} 
+          continent={continent} 
+          country={country}
+          title={TOURS_DETAILS_DATA[selectedTourId]?.[0]?.title || undefined}
+          tourId={selectedTourId}
+          countryKey={countryKey}
+        >
+          <BookNow tourId={selectedTourId} />
+        </GenericBottomSheet>
       )}
     </>
   );
