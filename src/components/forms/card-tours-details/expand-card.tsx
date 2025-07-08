@@ -8,14 +8,13 @@ interface Detail {
 }
 
 interface ExpandCardProps {
-  image: ImageSourcePropType;
   day: string;
   title: string;
   subTitle?: string;
   details: Detail[];
 }
 
-function ExpandCard({ image, day, title, subTitle, details }: ExpandCardProps) {
+function ExpandCard({  day, title, subTitle, details }: ExpandCardProps) {
   const [collapsed, setCollapsed] = useState(true);
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -73,13 +72,16 @@ function ExpandCard({ image, day, title, subTitle, details }: ExpandCardProps) {
         ]}
       >
         <View style={styles.row}>
-          <Image
-            source={image}
-            style={styles.image}
+          <AntDesign
+            name="calendar"
+            size={40}
+            color="#888"
+            style={styles.calendarIcon}
           />
           <View style={styles.textContainer}>
             <Text style={styles.day}>{day}</Text>
             <Text style={styles.title}>{title}</Text>
+            <Text style={styles.subTitle}>Highlights</Text>
             {!!subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
           </View>
           <AntDesign
@@ -114,6 +116,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    
   },
   image: {
     width: 70,
@@ -141,6 +144,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 8,
+  },
+  calendarIcon: {
+    marginRight: 12,
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
   },
   expandContent: {
     overflow: 'hidden',

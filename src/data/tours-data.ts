@@ -1,4 +1,4 @@
-import { IMAGES } from './images-countries';
+import { IMAGES } from './images-countries-data';
 
 export interface TourData {
   id: string;
