@@ -15,9 +15,13 @@
 
 ## 📸 Screenshot
 
-![Screenshot](path/to/your/screenshot.png)
-
----
+<h2>Screenshots</h2>
+<p align="center">
+  <img src="src/assets/screenshots/Simulator%20Screenshot%20-%20iPhone%2016e%20-%202025-07-08%20at%2016.37.22.png" alt="Main Screen" width="200"/>
+  <img src="src/assets/screenshots/Simulator%20Screenshot%20-%20iPhone%2016e%20-%202025-07-08%20at%2016.37.31.png" alt="Tour Details" width="200"/>
+  <img src="src/assets/screenshots/Simulator%20Screenshot%20-%20iPhone%2016e%20-%202025-07-08%20at%2016.37.36.png" alt="Tours List" width="200"/>
+  <img src="src/assets/screenshots/Simulator%20Screenshot%20-%20iPhone%2016e%20-%202025-07-08%20at%2016.37.43.png" alt="Book Tour" width="200"/>
+</p>
 
 ## 🚀 Description
 
